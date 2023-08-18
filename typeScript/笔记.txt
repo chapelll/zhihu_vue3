@@ -1,0 +1,5 @@
+typeScript的数据类型: 
+七种普通类型 number string boolean undefined null symbol bigint
+一种引用类型 object
+undefined和null是特殊的类型，可以赋值给number，string等类型
+any类型可以任意赋值，用了any就和js一样了
