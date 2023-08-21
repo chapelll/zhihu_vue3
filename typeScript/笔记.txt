@@ -3,3 +3,41 @@ typeScript的数据类型:
 一种引用类型 object
 undefined和null是特殊的类型，可以赋值给number，string等类型
 any类型可以任意赋值，用了any就和js一样了
+
+数组和元组:
+数组也要声明数据类型 let arr = number[]，这样的数组只能添加数字类型
+元组是数组要保存多种数据类型而提出的，元组声明时要明确长度与类型限制
+let arr2:[string,number] = ['1',2]   arr2.push(true) //这样添加是错误的
+可以使用push等方法添加元组的数据(突破声明时候的长度限制),但只能添加声明过的数据类型
+
+interface接口:
+interface用于对一个对象的属性做约束，它还可以添加可选属性和只读属性
+interface Person {
+    name: string,         let p:Person = {name: '123',id: 456}
+    readonly age: number, //只读属性 只能在定义时进行赋值,之后无法修改
+    id?: number //可选属性
+}
+
+function函数
+函数在创建时需要声明参数的类型和个数以及出参的类型(入参可以设置可选项)
+let add = (x: number,y: number,z?: number):number = { return x + y }
+使用interface来定义函数的类型
+interface Isum = {
+    (x: number,y: number,z?: number): number
+}
+
+类型推断,联合类型,类型断言,类型守卫: 
+类型推断指在定义变量时ts会自动推断变量的类型 let s = 'sss',ts自动判断s的类型是string
+联合类型指一个变量在定义时可以赋有多个类型，此时只能访问这些类型的共有属性及方法
+let abc:string | number = 123
+类型断言使用as关键字，直接断言该数据的类型
+function getLength(input: string | number): number {
+    const str = input as string  //断言input为string
+    if (str.length) {
+        return str.length
+    } else {
+        return str.toString().length
+    }
+}
+类型守卫是在联合类型通过条件语句排除某种类型时ts会自动判断为另外的类型
+
