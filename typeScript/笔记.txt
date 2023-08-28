@@ -41,3 +41,10 @@ function getLength(input: string | number): number {
 }
 类型守卫是在联合类型通过条件语句排除某种类型时ts会自动判断为另外的类型
 
+enum枚举
+类似于以前做的Table(一个表达映射关系的对象)
+enum direction {
+    up: 'UP',
+    down: 'DOWN',
+}
+如果不给枚举中的值赋值的话，第一位的值默认为0，之后的会累加
