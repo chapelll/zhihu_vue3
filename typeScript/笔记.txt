@@ -48,3 +48,29 @@ enum direction {
     down: 'DOWN',
 }
 如果不给枚举中的值赋值的话，第一位的值默认为0，之后的会累加
+
+generics泛型
+function echo<T>(arg: T): T {
+    retrun arg
+}
+1.泛型类似于参数的声明，主要用来约束参数的类型
+interface haveLength {
+    length: number
+}
+function fun1<T extends haveLength>(arg: T): T {
+    return arg.length //length字段只有数字、数组才有
+}
+2.泛型可以使用extends关键字继承interface的字段
+interface KeyPair<T,U> {
+    label: T, //该接口的类型约束希望是动态的
+    value: U
+}
+let obj1: KeyPair<number,string> = {
+    label: 123,
+    value: 'str'
+}
+let obj2: KeyPair<boolean,string> = {
+    label: true,
+    value: 'str'
+}
+3.泛型可以动态约束interface
