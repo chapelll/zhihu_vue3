@@ -74,3 +74,20 @@ let obj2: KeyPair<boolean,string> = {
     value: 'str'
 }
 3.泛型可以动态约束interface
+
+类型别名: 每次定义时全部把类型写出来太累，因此可以定义一个模板去套
+type PlusType = (x: number,y: number) => number 
+let sum1: PlusType
+类型别名也支持联合类型:
+type PlusType = string | number
+字面量类型:
+let aaa: 'aaa' = 'aaa'
+let ssdf: 123 = 132
+交叉类型: 类型别名可以和interface接口组合使用
+interface Iabc {age: number}
+type Tabc = Iabc & {name: string}
+let person:Tabc = {
+    age: 18,
+    name: 'XM'
+}
+
