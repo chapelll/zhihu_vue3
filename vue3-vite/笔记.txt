@@ -1,0 +1,8 @@
+vue3初探
+模板中的内容一定要是响应式的才行
+setup: setup意为准备，它会在所有生命周期前，因此它内部不能访问this
+ref: 将对象变成响应式的，响应式对象的值存在value中
+computed: 同vue2的计算属性，使用他要将计算过程放在回调中
+reactive: 将同一段逻辑中所用到的数据、方法组合在一起
+访问reactive中的变量时不需要.value(reactive中的项并不具有响应性)
+toRefs: 将对象中的值全部变成响应式的(配合reactive使用)
