@@ -22,3 +22,7 @@ watch(sum,(newVal,oldVal)=> {console.log(newVal，oldVal)})
 想要一次监听多个值，可以使用数组的形式，此时返回的值也是数组形式
 watch([number1,number2],(newVal,oldVal)=> {console.log(newVal，oldVal)})
 此时的newVal和oldVal都是多个值的数组，监听reactive包裹对象中的值: ()=>{data.count}
+
+hooks
+vue3中的hooks是指将一段逻辑及其它用到的数据、方法全部提取出来，做成一个函数，以模块的方式分离
+和提取，这样让逻辑清晰分明
