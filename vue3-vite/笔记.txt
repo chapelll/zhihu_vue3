@@ -15,3 +15,10 @@ vue3使用proxy来实现对象的响应性，弥补了vue2的缺点
 vue3的生命周期与vue2的大体相同，在vue2的生命周期前加上on就可
 没有beforeCreate和created，它们被放在了setup
 onRenderTracked和onRenderTriggered被用作调试
+
+watch
+vue3的watch写在setup中，它是一个回调函数，接受的参数分别是要监听的值、变化后的值、变化前的值
+watch(sum,(newVal,oldVal)=> {console.log(newVal，oldVal)})
+想要一次监听多个值，可以使用数组的形式，此时返回的值也是数组形式
+watch([number1,number2],(newVal,oldVal)=> {console.log(newVal，oldVal)})
+此时的newVal和oldVal都是多个值的数组，监听reactive包裹对象中的值: ()=>{data.count}
