@@ -6,3 +6,12 @@ computed: 同vue2的计算属性，使用他要将计算过程放在回调中
 reactive: 将同一段逻辑中所用到的数据、方法组合在一起
 访问reactive中的变量时不需要.value(reactive中的项并不具有响应性)
 toRefs: 将对象中的值全部变成响应式的(配合reactive使用)
+
+vue2使用defineProperty实现对象的响应性(缺点: this.arr[0] = 1和this.obj.name = '123'
+之类的操作无法监听到)
+vue3使用proxy来实现对象的响应性，弥补了vue2的缺点
+
+生命周期
+vue3的生命周期与vue2的大体相同，在vue2的生命周期前加上on就可
+没有beforeCreate和created，它们被放在了setup
+onRenderTracked和onRenderTriggered被用作调试
