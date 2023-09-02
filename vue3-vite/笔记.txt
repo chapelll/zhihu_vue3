@@ -26,3 +26,17 @@ watch([number1,number2],(newVal,oldVal)=> {console.log(newVal，oldVal)})
 hooks
 vue3中的hooks是指将一段逻辑及其它用到的数据、方法全部提取出来，做成一个函数，以模块的方式分离
 和提取，这样让逻辑清晰分明
+
+泛型改造
+ref也可以使用泛型，这里的泛型表示的是ref的value的类型
+
+defineComponent
+使用defineComponent包裹组件，让组件具有ts的支持
+setup(props,context)
+setup的两个参数props和context，props可以访问这个组件所有传入的prop
+context具有三个参数: attr(属性),slots(插槽),emit(发送)
+
+teleport
+意为传送门，使用teleport包裹组件，并添加to属性，将包裹的组件传送到to的组件内
+
+
