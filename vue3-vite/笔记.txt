@@ -39,4 +39,18 @@ context具有三个参数: attr(属性),slots(插槽),emit(发送)
 teleport
 意为传送门，使用teleport包裹组件，并添加to属性，将包裹的组件传送到to的组件内
 
+Suspense
+vue3提供的异步组件，他包裹的需要是一个promise(或者async-await)
+Suspense内部有两个内容(default表示异步加载完的内容，fallback表示异步加载完之前的内容)
+default可以存在多个异步内容(需要用一个标签把他们包起来)，它会在所有异步内容加载完毕之后再显示出来
+使用错误捕获钩子errorCaptured来捕获Suspense中的错误
+
+provide和inject
+当父组件需要传递很多层的数据到子组件时，这时会非常麻烦，使用provide和inject来简化操作
+父组件使用provide注册一个全局的内容，子组件使用inject来获取全局的内容:provide('idcard',123456)
+注意: 在使用provide和inject时一定要满足父组件-子组件的条件，因此我们可以在main.js的入口
+文件中注册provide，这样所有的组件都能使用inject来获取了（可以注册、获取响应式的内容）
+
+treeshaking
+es moudle 打包时，没有用到的方法不会被打包(这也是vue3为什么要使用import引入功能的原因之一)
 

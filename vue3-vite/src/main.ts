@@ -2,4 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+let app = createApp(App)
+app.provide('currentUser', {
+    name: 'wsc'
+})
+app.mount('#app')

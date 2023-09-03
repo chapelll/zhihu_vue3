@@ -1,28 +1,48 @@
 <template>
+  {{ err }}
+  <!-- 使用了类型守卫，判断了currentUser不是undefined -->
+  {{ currentUser && currentUser.name }} 
   <!-- <h1>{{ count }}</h1>
   <h1>{{ sum }}</h1> -->
   <!-- <div>{{ title }}</div>
   <button @click="add">+1</button>
   <button @click="addHello" style="display: block;">+Hello</button> -->
   <!-- {{ 'x轴:' + mouseXYRef.x + 'y轴:' + mouseXYRef.y }} -->
-  <div>x轴: {{ mouseXYRef.x }}</div>
-  <div>y轴: {{ mouseXYRef.y }}</div>
+  <Suspense>
+    <template #default>
+      <div>
+        <async-show />
+        <dog-show />
+      </div>
 
-  <h1 v-if="loading">loading....</h1>
-  <img v-if="loaded" :src="result ? result[0].url : undefined">
+    </template>
+    <template #fallback>
+      Loading....
+    </template>
+  </Suspense>
 
   <modal :modalShow="modalShow" @closeModal="modalShow = false">
-    123
+    这是插槽的内容
   </modal>
   <button @click="modalShow = true">打开modal</button>
+
+  <button @click="changeLang('english')">切换英文</button>
+  <button @click="changeLang('chinese')">切换中文</button>
+
+  <!-- <div>x轴: {{ mouseXYRef.x }}</div>
+  <div>y轴: {{ mouseXYRef.y }}</div>
+  <h1 v-if="loading">loading....</h1>
+  <img v-if="loaded" :src="result ? result[0].url : undefined"> -->
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered, watch } from 'vue';
+import { provide, inject, ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered, watch, onErrorCaptured } from 'vue';
 //ref变成响应式对象
 // import useMousePosistion from './hooks/useMousePosistion'
 import useURLLoader from './hooks/useURLLoader'
 import modal from './components/modal.vue'
+import asyncShow from './components/asyncShow.vue'
+import dogShow from './components/dogShow.vue'
 
 interface reactiveType {
   count: number,
@@ -52,9 +72,14 @@ interface CatResult {
 export default {
   name: 'App',
   components: {
-    modal
+    modal, asyncShow, dogShow
   },
   setup() {
+    let err = ref(null)
+    onErrorCaptured((e: any) => {
+      err.value = e
+      return true
+    })
     onMounted(() => {
       console.log('onMounted');
     })
@@ -118,7 +143,17 @@ export default {
     const reactiveRefData = toRefs(reactiveData)
     const mouseXYRef = toRefs(mouseXY)
 
+    let lang = ref('chinese')
+    const changeLang = (type: string) => {
+      lang.value = type
+    }
+    provide('lang', lang)
+
+    let currentUser = inject<{ name: string }>('currentUser')
+    // 在inject中使用泛型
+
     return {
+      err,
       sum,
       ...reactiveRefData,
       title,
@@ -127,7 +162,9 @@ export default {
       mouseXY,
       mouseXYRef,
       result, loading, loaded, error,
-      modalShow
+      modalShow,
+      changeLang,
+      currentUser
     }
   },
 

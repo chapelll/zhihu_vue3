@@ -4,13 +4,14 @@
       <slot>
         <div>this is modal</div>
       </slot>
+      {{ lang }}
       <button @click="handleClose"> close </button>
     </div>
   </teleport>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   props: {
@@ -24,8 +25,10 @@ export default defineComponent({
     const handleClose = () => {
       context.emit('closeModal')
     }
+    const lang = inject('lang')
     return {
-      handleClose
+      handleClose,
+      lang
     }
   }
 })
