@@ -54,3 +54,17 @@ provide和inject
 treeshaking
 es moudle 打包时，没有用到的方法不会被打包(这也是vue3为什么要使用import引入功能的原因之一)
 
+setup语法糖
+vue3.2版本推出的setup指令，加再script标签上
+加上setup后，定义的变量和方法无需return就可以在模板中使用，引入的组件也不需要在components
+中注册就可以使用
+props和emits被改成了两个需要引入的方法defineProps和defineEmits来代替从前
+defineProps结合ts: const props = defineProps<{ user: IUser }>(),props的类型就是一个对象，需要
+有user字段，user字段的类型是IUser
+defineEmits结合ts: const emits = defineEmits<IEvent>(),IEvent是emits这个函数的类型
+interface IEvent {
+    (e: 'change',age: number): void  IEvent的事件类型是change，参数是number
+}
+
+
+
