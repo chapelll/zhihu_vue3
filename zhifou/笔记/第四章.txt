@@ -1,0 +1,8 @@
+PropType:
+Vue3中提供的用来进行props类型断言的api,需要结合泛型使用
+list: {
+    type: Array as PropType<ColumnP>
+}
+
+使用bootstrap的css解决方案，引入css后在html上添加类目实现
+使用静态文件要通过require引入

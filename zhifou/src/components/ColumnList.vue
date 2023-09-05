@@ -1,0 +1,51 @@
+<template>
+  <div class="row">
+    <div v-for="column of colunmList" :key="column.id" class="col-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <img :src="column.avatar" :alt="column.title" class="rounded-circle Border border-light w-25 my-3">
+          <h5>{{ column.title }}</h5>
+          <p>{{ column.description }}</p>
+          <a href="#" class="btn btn-outline-primary">进入专栏</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
+
+export interface ColumnProps {
+  id: string;
+  title: string;
+  avatar?: string;
+  description: string;
+}
+
+export default defineComponent({
+  name: 'ColumnList',
+  props: {
+    list: {
+      type: Array as PropType<ColumnProps[]>
+    }
+  },
+  setup(props) {
+    const colunmList = computed(() => {
+      return props.list?.map(colunm => {
+        if (!colunm.avatar) {
+          colunm.avatar = require('@/assets/avatar.png')
+        }
+        return colunm
+      })
+    })
+
+    return {
+      colunmList
+    }
+  }
+})
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped></style>
