@@ -6,3 +6,6 @@ list: {
 
 使用bootstrap的css解决方案，引入css后在html上添加类目实现
 使用静态文件要通过require引入
+
+添加样式没有成功是因为没有加 * (这个样式下面的所有元素)
+.dropdown-option.is-disabled * {color: red}
