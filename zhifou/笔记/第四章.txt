@@ -9,3 +9,11 @@ list: {
 
 添加样式没有成功是因为没有加 * (这个样式下面的所有元素)
 .dropdown-option.is-disabled * {color: red}
+
+点击其他地方关闭下拉菜单: 给整个document加上点击事件，点击事件发生时判断
+该点击事件是否在下拉菜单所包含的元素中，不是就将下拉菜单关闭掉(mounted阶段注册，
+unmounted阶段注销,dropdown.value.contains(e.target as HTMLElement))
+
+vue3中获取dom元素，现在html上使用ref="abc"，再在setup中进行定义
+const abc = ref(null)，最后return出去即可获取到
+注意: ref和定义的变量名要相同
