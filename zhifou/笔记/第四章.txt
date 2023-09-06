@@ -17,3 +17,5 @@ unmounted阶段注销,dropdown.value.contains(e.target as HTMLElement))
 vue3中获取dom元素，现在html上使用ref="abc"，再在setup中进行定义
 const abc = ref(null)，最后return出去即可获取到
 注意: ref和定义的变量名要相同
+
+Ref代表的是一个类(响应式)
