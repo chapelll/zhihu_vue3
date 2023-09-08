@@ -1,0 +1,36 @@
+将输入的input单独封装成一个组件，向其传入rules，rules应该是一个数组
+rules: [{
+    type: 'required',
+    message: '必须填写'
+},{
+    type: 'email',
+    message: '不符合邮箱规则'
+},]
+inputValid组件内部自己定义一个inputRef，在触发blur事件的时候，将输入的值
+(v-model的)与rules进行everys遍历（每个rules中的条件都要判断一次）:
+
+数组的everys方法: 全都为true时返回true，遇到false时立即停止遍历并返回false
+    const validateInput = () => {
+      //val要经过所有rule的校验
+      const allPass = props.rules?.every(rule => {
+        console.log(rule);
+        let pass = true
+        inputRef.message = rule.message
+        //因为是switch，是单独每次计算break的
+        switch (rule.type) {
+          case 'required':
+            pass = (inputRef.val.trim() === "")
+            break;
+          case 'email':
+            pass = emailReg.test(inputRef.val)
+            break;
+          case 'phone':
+            pass = phoneReg.test(inputRef.val)
+            break;
+          default:
+            break;
+        }
+        return pass
+      })
+      inputRef.error = !allPass
+    }
