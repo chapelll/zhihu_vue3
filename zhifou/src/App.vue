@@ -1,13 +1,28 @@
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser"></GlobalHeader>
-    <ColumnList :list="list"></ColumnList>
+    <!-- <ColumnList :list="list"></ColumnList> -->
+    <div class="form">
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">请输入邮箱:</label>
+          <input type="email" v-model="emailRef.val" class="form-control" id="exampleInputEmail1"
+            aria-describedby="emailHelp" @blur="validateEmail">
+          <div v-if="emailRef.error" style="color: red;" class="form-text">{{ emailRef.message }}</div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">请输入密码:</label>
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 
@@ -42,13 +57,36 @@ const userData: UserProps = {
 export default defineComponent({
   name: 'App',
   components: {
-    ColumnList,
+    // ColumnList,
     GlobalHeader
   },
   setup() {
+    const emailRef = reactive({
+      val: '',
+      error: false,
+      message: ''
+    })
+    const validateEmail = () => {
+
+      emailRef.error = false
+      emailRef.message = ""
+
+      const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+
+      if (emailRef.val.trim() == "") {
+        emailRef.error = true
+        emailRef.message = "邮箱不能为空！"
+      } else if (!reg.test(emailRef.val)) {
+        emailRef.error = true
+        emailRef.message = "邮箱格式不正确！"
+      }
+    }
+
     return {
       list: testData,
-      currentUser: userData
+      currentUser: userData,
+      emailRef,
+      validateEmail
     }
   },
 })
