@@ -1,7 +1,7 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input type="email" class="form-control" :class="{ 'is-invalid': inputRef.error }" v-model="inputRef.val"
-      @blur="validateInput">
+    <input class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val" @blur="validateInput"
+      @input="updateValue" v-bind="$attrs">
     <span class="invalid-feedback" v-if="inputRef.error">{{ inputRef.message }}</span>
   </div>
 </template>
@@ -21,10 +21,16 @@ export default defineComponent({
     rules: {
       type: Array as PropType<rulesProp>
     },
+    modelValue: {
+      type: String
+    }
   },
-  setup(props) {
+  inheritAttrs: false,
+  setup(props, context) {
+    console.log(context.attrs);
+
     const inputRef = reactive({
-      val: '',
+      val: props.modelValue || '',
       error: false,
       message: '',
     })
@@ -37,7 +43,7 @@ export default defineComponent({
           //因为是switch，是单独每次计算break的
           switch (rule.type) {
             case 'required':
-              pass = (inputRef.val.trim() === "")
+              pass = (inputRef.val.trim() !== "")
               break;
             case 'email':
               pass = emailReg.test(inputRef.val)
@@ -55,9 +61,16 @@ export default defineComponent({
       }
     }
 
+    const updateValue = (e: Event) => {
+      const targetValue = (e.target as HTMLInputElement).value
+      inputRef.val = targetValue
+      context.emit('update:modelValue', targetValue)
+    }
+
     return {
       inputRef,
-      validateInput
+      validateInput,
+      updateValue
     }
   },
 })

@@ -6,17 +6,11 @@
       <form>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">请输入邮箱:</label>
-          <validateInput :rules="rules"></validateInput>
+          <validateInput :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱"></validateInput>
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">请输入邮箱:</label>
-          <input type="email" v-model="emailRef.val" class="form-control" id="exampleInputEmail1"
-            aria-describedby="emailHelp" @blur="validateEmail">
-          <div v-if="emailRef.error" style="color: red;" class="form-text">{{ emailRef.message }}</div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">请输入密码:</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label for="exampleInputEmail1" class="form-label">请输入密码:</label>
+          <validateInput :rules="passwordRules" v-model="passwordVal" placeholder="请输入密码"></validateInput>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
@@ -26,7 +20,7 @@
 
 <script lang="ts">
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import validateInput, { rulesProp } from './components/validateInput.vue'
@@ -67,6 +61,8 @@ export default defineComponent({
     validateInput
   },
   setup() {
+
+    // 表单校验相关
     const emailRef = reactive({
       val: '',
       error: false,
@@ -88,7 +84,7 @@ export default defineComponent({
       }
     }
 
-    const rules: rulesProp = [{
+    const emailRules: rulesProp = [{
       type: 'required',
       message: '请输入邮箱',
     }, {
@@ -96,12 +92,24 @@ export default defineComponent({
       message: '邮箱格式不正确',
     }]
 
+    const passwordRules: rulesProp = [{
+      type: 'required',
+      message: '请输入密码',
+    }]
+
+    //表单双向绑定相关
+    const emailVal = ref('')
+    const passwordVal = ref('')
+
     return {
       list: testData,
       currentUser: userData,
       emailRef,
       validateEmail,
-      rules
+      emailRules,
+      passwordRules,
+      emailVal,
+      passwordVal,
     }
   },
 })

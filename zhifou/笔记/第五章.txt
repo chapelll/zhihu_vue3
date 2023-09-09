@@ -34,3 +34,11 @@ inputValid组件内部自己定义一个inputRef，在触发blur事件的时候�
       })
       inputRef.error = !allPass
     }
+
+自定义组件的双向绑定逻辑: 父组件定义一个值，使用v-model传入子组件
+子组件用props获取到值后，将其绑定到input上，每次input触发输入事件时，
+获取到e，将e的值使用$emit触发出去，父组件监听$emit触发的事件，会自动同步到定义的值
+vue3规定了modelValue和update:modelValue分别用作子组件传入的值和触发事件
+
+一个非props的attributes被传入组件时会自动添加到根节点，此时可以使用inheritAttrs: false来禁止
+根组件的继承。在想要继承非props属性的节点那里使用v-bind="$attrs"即可完成该操作
