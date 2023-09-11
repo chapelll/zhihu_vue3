@@ -56,9 +56,10 @@ export default defineComponent({
           }
           return pass
         })
-        console.log(allPass);
         inputRef.error = !allPass
+        return allPass
       }
+      return true
     }
 
     const updateValue = (e: Event) => {

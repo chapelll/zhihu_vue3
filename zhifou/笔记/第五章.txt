@@ -42,3 +42,11 @@ vue3规定了modelValue和update:modelValue分别用作子组件传入的值和�
 
 一个非props的attributes被传入组件时会自动添加到根节点，此时可以使用inheritAttrs: false来禁止
 根组件的继承。在想要继承非props属性的节点那里使用v-bind="$attrs"即可完成该操作
+
+具名插槽:
+子组件: <slot name="submit"></slot>
+父组件: <template v-slot:submit>使用具名插槽</template> (v-slot:submit可以简写为#submit)
+
+将子组件的校验全部集成到父组件的思路:
+子组件在创建时将自己的校验方法传递给父组件，父组件使用一个数组接收(事件监听器 $on)。
+最终submit校验时由父组件去循环执行所有的校验方法，在父组件里获得每个校验的结果
