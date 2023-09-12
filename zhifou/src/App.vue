@@ -6,7 +6,8 @@
       <validateForm @form-submit="onFormSubmit">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">请输入邮箱:</label>
-          <validateInput ref="inputRef" :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱"></validateInput>
+          {{ emailVal }}
+          <validateInput :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱"></validateInput>
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">请输入密码:</label>
@@ -67,27 +68,6 @@ export default defineComponent({
   setup() {
 
     // 表单校验相关
-    const emailRef = reactive({
-      val: '',
-      error: false,
-      message: ''
-    })
-    const validateEmail = () => {
-
-      emailRef.error = false
-      emailRef.message = ""
-
-      const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-
-      if (emailRef.val.trim() == "") {
-        emailRef.error = true
-        emailRef.message = "邮箱不能为空！"
-      } else if (!reg.test(emailRef.val)) {
-        emailRef.error = true
-        emailRef.message = "邮箱格式不正确！"
-      }
-    }
-
     const emailRules: rulesProp = [{
       type: 'required',
       message: '请输入邮箱',
@@ -105,23 +85,30 @@ export default defineComponent({
     const emailVal = ref('')
     const passwordVal = ref('')
 
-    const onFormSubmit = (e: boolean) => {
-      console.log(inputRef.value.validateInput());
+    const clearVal = () => {
+      emailVal.value = 'dhusdvh'
+
     }
 
+    const onFormSubmit = (result: boolean) => {
+      console.log('result', result);
+      if (!result) {
+        //如果返回false清空所有表单项
+        clearVal()
+      }
+    }
     const inputRef = ref<any>()
 
     return {
       list: testData,
       currentUser: userData,
-      emailRef,
-      validateEmail,
       emailRules,
       passwordRules,
       emailVal,
       passwordVal,
       onFormSubmit,
-      inputRef
+      inputRef,
+      clearVal
     }
   },
 })
