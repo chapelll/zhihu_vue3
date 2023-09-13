@@ -1,12 +1,12 @@
 <template>
   <nav class="navbar navbar-dark bg-primary justify-content-between mb-4 px-4">
-    <a href="#" class="navbar-brand">知否专栏</a>
+    <router-link to="/" class="navbar-brand">知否专栏</router-link>
     <div v-if="!user?.isLogin">
       <div class="list-inline-item">
-        <a href="#" class="btn btn-outline-light">登录</a>
+        <router-link to="login" class="btn btn-outline-light">登录</router-link>
       </div>
       <div class="list-inline-item">
-        <a href="#" class="btn btn-outline-light">注册</a>
+        <router-link to="login" class="btn btn-outline-light">注册</router-link>
       </div>
     </div>
     <div v-else>
@@ -18,7 +18,7 @@
           <Dropdown-item>
             <a href="#" class="dropdown-item">编辑资料</a>
           </Dropdown-item>
-          <Dropdown-item disabled>
+          <Dropdown-item>
             <a href="#" class="dropdown-item">退出登录</a>
           </Dropdown-item>
         </Dropdown>
@@ -32,9 +32,9 @@ import Dropdown from './Dropdown.vue';
 import DropdownItem from './DropdownItem.vue';
 
 export interface UserProps {
-  isLogin: boolean;
+  isLogin?: boolean;
   name?: string;
-  id?: number;
+  id: number;
 }
 
 export default defineComponent({
