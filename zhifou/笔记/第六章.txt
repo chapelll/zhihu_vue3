@@ -1,0 +1,7 @@
+vue-router
+vue3使用引入的方式来使用route和router
+import { useRouter, useRoute } from 'vue-router'
+<pre></pre>标签可以用来调试
+router的动态路由匹配:
+在router中的path上写上:修饰符 （path: '/columnDetail/:id',）
+id就会自动成为url中对应的数据
