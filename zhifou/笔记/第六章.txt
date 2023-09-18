@@ -5,3 +5,6 @@ import { useRouter, useRoute } from 'vue-router'
 router的动态路由匹配:
 在router中的path上写上:修饰符 （path: '/columnDetail/:id',）
 id就会自动成为url中对应的数据
+
+取vuex中的数据时使用userStore和computed钩子函数
+getter: 相当于store中对于state的计算属性

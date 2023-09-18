@@ -27,7 +27,8 @@
   </nav>
 </template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
+import { useStore } from 'vuex'
 import Dropdown from './Dropdown.vue';
 import DropdownItem from './DropdownItem.vue';
 
@@ -43,11 +44,15 @@ export default defineComponent({
     Dropdown,
     DropdownItem
   },
-  props: {
-    user: {
-      type: Object as PropType<UserProps>
+  setup() {
+    const store = useStore()
+    const currentUser = computed(() => {
+      return store.state.user
+    })
+    return {
+      user: currentUser
     }
-  },
+  }
 })
 </script>
 
