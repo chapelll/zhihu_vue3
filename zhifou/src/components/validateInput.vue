@@ -1,13 +1,15 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val" @blur="validateInput"
-      @input="updateValue" v-bind="$attrs">
+    <input v-if="type == 'input'" class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
+      @blur="validateInput" @change="validateInput" @input="updateValue" v-bind="$attrs">
+    <textarea v-else class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
+      @blur="validateInput" @change="validateInput" @input="updateValue" v-bind="$attrs" rows="10"></textarea>
     <span class="invalid-feedback" v-if="inputRef.error">{{ inputRef.message }}</span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, onMounted } from 'vue'
+import { defineComponent, PropType, reactive, onMounted, nextTick } from 'vue'
 import { emitter } from './validateForm.vue'
 
 const emailReg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
@@ -17,6 +19,7 @@ interface ruleProp {
   message: string
 }
 export type rulesProp = ruleProp[]
+export type tagType = 'input' | 'textarea'
 export default defineComponent({
   props: {
     rules: {
@@ -24,6 +27,10 @@ export default defineComponent({
     },
     modelValue: {
       type: String
+    },
+    type: {
+      type: String as PropType<tagType>,
+      default: 'input'
     }
   },
   inheritAttrs: false,
@@ -62,6 +69,9 @@ export default defineComponent({
     }
 
     const updateValue = (e: Event) => {
+      nextTick(() => {
+        validateInput()
+      })
       const targetValue = (e.target as HTMLInputElement).value
       inputRef.val = targetValue
       context.emit('update:modelValue', targetValue)

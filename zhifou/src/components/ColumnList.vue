@@ -9,7 +9,6 @@
           <router-link :to="`/columnDetail/${column.id}`">
             <div class="btn btn-outline-primary">进入专栏</div>
           </router-link>
-
         </div>
       </div>
     </div>
@@ -50,5 +49,4 @@ export default defineComponent({
 })
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped></style>
