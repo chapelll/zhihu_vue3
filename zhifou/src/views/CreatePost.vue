@@ -1,7 +1,7 @@
 <template>
   <div class="create-post-page">
     <h4 class="ont-weight-bold mb-4">新建文章</h4>
-    <validateForm>
+    <validateForm @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">文章标题:</label>
         <validateInput :rules="titleRules" v-model="titleVal" placeholder="请输入文章标题" type="input">
@@ -20,9 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
+
 export default defineComponent({
   name: 'create',
   components: {
@@ -40,11 +42,32 @@ export default defineComponent({
       type: 'required',
       message: '请输入内容',
     }]
+
+    const store = useStore()
+
+    const onFormSubmit = (result: boolean) => {
+      if (result) {
+        console.log('通过验证');
+        const { columnId } = store.state.user
+        let data = {
+          columnId,
+          post: {
+            _id: new Date().getTime(),
+            createdAt: new Date().toLocaleString(),
+            title: titleVal.value,
+            excerpt: contentVal.value,
+          }
+        }
+        store.commit('createPost', data)
+        
+      }
+    }
     return {
       titleVal,
       contentVal,
       titleRules,
-      contentRules
+      contentRules,
+      onFormSubmit
     }
   }
 })

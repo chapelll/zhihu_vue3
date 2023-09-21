@@ -5,6 +5,7 @@ interface UserProps {
     isLogin?: boolean;
     name?: string;
     id?: number;
+    columnId?: number
 }
 
 export interface GlobalDataProps {
@@ -19,7 +20,9 @@ const store = createStore<GlobalDataProps>({
         posts: postTest,
         user: {
             isLogin: true,
-            name: 'zcz'
+            name: 'zcz',
+            id: 1,
+            columnId: 100,
         }
     },
     getters: {
@@ -40,7 +43,14 @@ const store = createStore<GlobalDataProps>({
                 isLogin: true,
                 name: 'zcz'
             }
+        },
+        createPost(state, data) {
+            const index = state.posts.findIndex((item) => {
+                return item.columnId = data.columnId
+            })
+            state.posts[index].list.push(data.post)
         }
+
     },
 
 

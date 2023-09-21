@@ -13,7 +13,7 @@
       <div class="list-inline-item">
         <Dropdown :title="`hello！ ${user.name}`">
           <Dropdown-item>
-            <router-link to="create" class="dropdown-item">新建文章</router-link>
+            <router-link :to="{ name: 'create' }" class="dropdown-item">新建文章</router-link>
           </Dropdown-item>
           <Dropdown-item>
             <a href="#" class="dropdown-item">编辑资料</a>

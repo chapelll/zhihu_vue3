@@ -29,12 +29,12 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const store = useStore()
-    const currentId = route.params.id
+    const columnId = route.params.columnId
     const column = computed(() => {
-      return store.state.columns.filter((item: any) => item.id == currentId)[0]
+      return store.state.columns.filter((item: any) => item.columnId == columnId)[0]
     })
     const list = computed(() => {
-      return store.state.posts.filter((item: any) => item.columnId == currentId)[0].list
+      return store.state.posts.filter((item: any) => item.columnId == columnId)[0].list
     })
     return {
       route,

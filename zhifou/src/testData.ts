@@ -7,29 +7,32 @@ const avatar4 = 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a
 
 const columnTest: ColumnProps[] = [{
   id: 1,
+  columnId: 100,
   title: 'test1的专栏',
   avatar: avatar1,
   description: '这是test1的专栏，有很多有趣的东西',
 }, {
   id: 2,
+  columnId: 200,
   title: 'test2的专栏',
   avatar: avatar2,
   description: '这是test2的专栏，有很多有趣的东西'
 }, {
   id: 3,
+  columnId: 300,
   title: 'test3的专栏',
   // avatar: avatar3,
   description: '这是test3的专栏，有很多有趣的东西'
 }, {
   id: 4,
+  columnId: 300,
   title: 'test4的专栏',
   avatar: avatar4,
   description: '这是test4的专栏，有很多有趣的东西'
 },]
 
 const postTest: any = [{
-  columnId: 1,
-  authorId: 1,
+  columnId: 100,
   list: [{
     _id: 111,
     createdAt: '2020-06-11 10:14:32',
@@ -50,8 +53,7 @@ const postTest: any = [{
     excerpt: 'this is a new post you Very often we will need to map routes with the given pattern to the samecomponent. For example we may have a Ueer comporent which shculd be rendered for allusers but with dif...'
   }]
 }, {
-  columnId: 2,
-  authorId: 2,
+  columnId: 200,
   list: [{
     _id: 111,
     createdAt: '2020-06-11 10:14:32',
@@ -66,8 +68,7 @@ const postTest: any = [{
     excerpt: 'this is a new post you Very often we will need to map routes with the given pattern to the samecomponent. For example we may have a Ueer comporent which shculd be rendered for allusers but with dif...'
   }]
 }, {
-  columnId: 3,
-  authorId: 3,
+  columnId: 300,
   list: [{
     _id: 111,
     createdAt: '2020-06-11 10:14:32',
@@ -75,9 +76,8 @@ const postTest: any = [{
     image: imgUrl1,
     excerpt: 'this is a new post you Very often we will need to map routes with the given pattern to the samecomponent. For example we may have a Ueer comporent which shculd be rendered for allusers but with dif...'
   },]
-}, , {
-  columnId: 4,
-  authorId: 4,
+}, {
+  columnId: 400,
   list: [{
     _id: 111,
     createdAt: '2020-06-11 10:14:32',
@@ -89,6 +89,7 @@ const postTest: any = [{
 
 interface ColumnProps {
   id: number;
+  columnId: number,
   title: string;
   avatar?: string;
   description: string;
@@ -104,7 +105,6 @@ interface postPropItem {
 
 interface postProps {
   columnId: number,
-  authorId: number,
   list: postPropItem[],
 }
 
