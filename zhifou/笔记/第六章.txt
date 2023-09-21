@@ -8,3 +8,10 @@ id就会自动成为url中对应的数据
 
 取vuex中的数据时使用userStore和computed钩子函数
 getter: 相当于store中对于state的计算属性
+
+路由前置守卫: router.beforeEach
+路由进入前的方法(to,from，next) 调用next()以进行路由行动
+使用路由元信息 {meta: {requiredLogin: true}} 来进行路由的权限控制。如未登录时跳转到登录页
+if (to.meta.requiredLogin && !store.state.user.isLogin) {
+        next({ name: 'login' })
+    }

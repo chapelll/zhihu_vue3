@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
 
@@ -44,6 +45,7 @@ export default defineComponent({
     }]
 
     const store = useStore()
+    const router = useRouter()
 
     const onFormSubmit = (result: boolean) => {
       if (result) {
@@ -59,7 +61,11 @@ export default defineComponent({
           }
         }
         store.commit('createPost', data)
-        
+        router.push({
+          name: 'columnDetail',
+          params: { columnId: columnId }
+        })
+
       }
     }
     return {
