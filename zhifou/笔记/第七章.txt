@@ -1,0 +1,11 @@
+//使用axios拦截器(request)
+axios.interceptors.request.use(function (config) {
+    // 保留以前的params，新添加icode字段
+    config.params = {...config.params,icode: 'ED04A2A4725CFD8C'}
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
+
+vuex: action用作异步请求

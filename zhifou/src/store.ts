@@ -1,59 +1,72 @@
 import { createStore } from 'vuex'
-import { columnTest, postTest, ColumnProps, postProps } from './testData'
+import axios from 'axios'
+import { testData, testPosts } from './testData'
 
 interface UserProps {
-    isLogin?: boolean;
+    isLogin: boolean;
     name?: string;
     id?: number;
-    columnId?: number
+    columnId?: number;
 }
-
+interface ImageProps {
+    _id?: string;
+    url?: string;
+    createdAt?: string;
+}
+export interface ColumnProps {
+    _id: string;
+    title: string;
+    avatar?: ImageProps;
+    description: string;
+}
+export interface PostProps {
+    id: number;
+    title: string;
+    content: string;
+    image?: string;
+    createdAt: string;
+    columnId: number;
+}
 export interface GlobalDataProps {
-    columns: ColumnProps[],
-    posts: postProps[],
-    user: UserProps,
+    columns: ColumnProps[];
+    posts: PostProps[];
+    user: UserProps;
 }
-
 const store = createStore<GlobalDataProps>({
     state: {
-        columns: columnTest,
-        posts: postTest,
-        user: {
-            isLogin: true,
-            name: 'zcz',
-            id: 1,
-            columnId: 100,
-        }
-    },
-    getters: {
-        biggerColumnLen(state) {
-            return state.columns.filter((item) => item.id > 1).length
-        },
-        getColumnById: (state) => (id: number) => {
-            state.columns.find((item) => item.id === id)
-        },
-        getPostsByCid: (state) => (id: number) => {
-            state.posts.filter((item) => item.columnId === id)[0].list
-        },
+        columns: [],
+        posts: testPosts,
+        user: { isLogin: true, name: 'viking', columnId: 1 }
     },
     mutations: {
         login(state) {
-            state.user = {
-                ...state.user,
-                isLogin: true,
-                name: 'zcz'
-            }
+            state.user = { ...state.user, isLogin: true, name: 'viking' }
         },
-        createPost(state, data) {
-            const index = state.posts.findIndex((item) => {
-                return item.columnId = data.columnId
-            })
-            state.posts[index].list.push(data.post)
+        createPost(state, newPost) {
+            state.posts.push(newPost)
+        },
+        fetchColumns(state, rawData) {
+            state.columns = rawData.data.list
         }
-
     },
-
-
+    getters: {
+        biggerColumnsLen(state) {
+            return state.columns.filter(c => Number(c._id) > 2).length
+        },
+        getColumnById: (state) => (id: number) => {
+            return state.columns.find(c => Number(c._id) === id)
+        },
+        getPostsByCid: (state) => (cid: number) => {
+            return state.posts.filter(post => post.columnId === cid)
+        }
+    },
+    actions: {
+        fetchColumns(context) {
+            axios.get('/columns').then(resp => {
+                context.commit('fetchColumns', resp.data)
+            })
+        }
+    },
 })
 
 export default store

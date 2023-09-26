@@ -17,7 +17,7 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, onMounted } from 'vue'
 import ColumnList from '../components/ColumnList.vue'
 import { useStore } from 'vuex'
 
@@ -28,11 +28,16 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
+
+        onMounted(() => {
+            store.dispatch('fetchColumns')
+        })
+
         const list = computed(() => {
             return store.state.columns
         })
-        const length = computed(()=>{
-            return store.state.columns.filter((item: any)=>item.id > 2).length
+        const length = computed(() => {
+            return store.state.columns.filter((item: any) => item.id > 2).length
         })
         return {
             list,
