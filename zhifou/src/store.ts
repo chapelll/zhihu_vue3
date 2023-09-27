@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-import { testData, testPosts } from './testData'
 
 interface UserProps {
     isLogin: boolean;
@@ -20,12 +19,13 @@ export interface ColumnProps {
     description: string;
 }
 export interface PostProps {
-    id: number;
+    _id: string;
     title: string;
-    content: string;
-    image?: string;
+    excerpt?: string;
+    content?: string;
+    image?: ImageProps;
     createdAt: string;
-    columnId: number;
+    column: string;
 }
 export interface GlobalDataProps {
     columns: ColumnProps[];
@@ -35,7 +35,7 @@ export interface GlobalDataProps {
 const store = createStore<GlobalDataProps>({
     state: {
         columns: [],
-        posts: testPosts,
+        posts: [],
         user: { isLogin: true, name: 'viking', columnId: 1 }
     },
     mutations: {
@@ -47,25 +47,35 @@ const store = createStore<GlobalDataProps>({
         },
         fetchColumns(state, rawData) {
             state.columns = rawData.data.list
-        }
+        },
+        fetchColumn(state, rawData) {
+            state.columns = [rawData.data]
+        },
+        fetchPosts(state, rawData) {
+            state.posts = rawData.data.list
+        },
     },
     getters: {
-        biggerColumnsLen(state) {
-            return state.columns.filter(c => Number(c._id) > 2).length
+        getColumnById: (state) => (id: string) => {
+            return state.columns.find(c => c._id === id)
         },
-        getColumnById: (state) => (id: number) => {
-            return state.columns.find(c => Number(c._id) === id)
+        getPostsByCid: (state) => (cid: string) => {
+            return state.posts.filter(post => post.column === cid)
         },
-        getPostsByCid: (state) => (cid: number) => {
-            return state.posts.filter(post => post.columnId === cid)
-        }
     },
     actions: {
-        fetchColumns(context) {
-            axios.get('/columns').then(resp => {
-                context.commit('fetchColumns', resp.data)
-            })
-        }
+        async fetchColumns(context) {
+            const resp = await axios.get('/columns')
+            context.commit('fetchColumns', resp.data)
+        },
+        async fetchColumn(context, id) {
+            const resp = await axios.get(`/columns/${id}`)
+            context.commit('fetchColumn', resp.data)
+        },
+        async fetchPosts(context, id) {
+            const resp = await axios.get(`/columns/${id}/posts`)
+            context.commit('fetchPosts', resp.data)
+        },
     },
 })
 

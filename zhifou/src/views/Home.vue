@@ -34,14 +34,12 @@ export default defineComponent({
         })
 
         const list = computed(() => {
+            console.log(store.state.columns);
             return store.state.columns
         })
-        const length = computed(() => {
-            return store.state.columns.filter((item: any) => item.id > 2).length
-        })
+
         return {
             list,
-            length
         }
     }
 })

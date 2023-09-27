@@ -3,7 +3,7 @@
     <div class="column-detail-page w-75 mx-auto">
       <div class="column-info row mb-4 border-bottom pb-4 align-items-center" v-if="column">
         <div class="col-3 text-center">
-          <img :src="column.avatar" class="rounded-circle border w-100">
+          <img :src="column.avatar?.url" class="rounded-circle border w-100">
         </div>
         <div class="col-9">
           <h4>{{ column.title }}</h4>
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import postList from '../components/postList.vue'
@@ -29,13 +29,23 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const store = useStore()
-    const columnId = route.params.columnId
+    console.log(route.params);
+
+    const currentId = route.params.columnId
+
+    onMounted(() => {
+      store.dispatch('fetchColumn', currentId)
+      store.dispatch('fetchPosts', currentId)
+    })
+
     const column = computed(() => {
-      return store.state.columns.filter((item: any) => item.columnId == columnId)[0]
+      return store.getters.getColumnById(currentId)
     })
     const list = computed(() => {
-      return store.state.posts.filter((item: any) => item.columnId == columnId)[0].list
+      return store.getters.getPostsByCid(currentId)
     })
+    console.log('list', list.value);
+
     return {
       route,
       column,
