@@ -9,3 +9,15 @@ axios.interceptors.request.use(function (config) {
 });
 
 vuex: action用作异步请求
+
+全局loading思路: 
+在main.ts中使用拦截器，发送请求前设置loading，接受响应再消除loading
+使用vuex来实现，拦截器中使用commit提交mutation改变state中的isLoading，
+App.vue中引入vuex并使用store.state中的isLoading来决定loading显示与否(loader组件放在App.vue中)
+
+loader优化:
+像loader这类全局显示的组件考虑到使用teleport传送门将它放到最外层去
+思路: 在loader组件挂在前(setup中)，使用document创建一个#back节点，
+#back节点再最外层与App节点同级。此时将loader挂载到它上面。
+发现bug: 每次使用到loader组件时都会创建一个#back节点，会变得越来越多，
+考虑在loader组件的注销阶段将本次创建的#back节点删除
