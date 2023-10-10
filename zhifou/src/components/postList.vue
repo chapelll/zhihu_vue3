@@ -27,8 +27,13 @@ export default defineComponent({
     }
   },
   setup(props) {
+
+    const posts = computed(() => {
+      return props.list
+    })
+
     return {
-      posts: props.list
+      posts
     }
   }
 })
