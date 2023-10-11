@@ -1,0 +1,7 @@
+jwt运行机制: （token机制，不是cookie机制）
+客户端将用户名和密码发送到服务端，服务端根据用户名、密码、时间等信息进行jwt加密，生成
+token，并将token返回给客户端.客户端收到token后将它保存起来(localstorage或者sessionstorage)，
+在之后的每次请求中都将token放在header中，服务端收到token后会使用jwt反向验证token的信息
+，通过后就认为是正确的访问
+
+客户端点击注销就是把token在storage中消除掉，token还具有过期时间

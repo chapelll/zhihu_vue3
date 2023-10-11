@@ -54,8 +54,13 @@ export default defineComponent({
 
         const onFormSubmit = (result: boolean) => {
             if (result) {
-                store.commit('login')
-                router.push(`/`)
+                store.dispatch('login', {
+                    email: emailVal.value,
+                    password: passwordVal.value,
+                }).then((res) => {
+                    console.log(res);
+                    router.push(`/`)
+                })
             }
         }
         const inputRef = ref<any>()
