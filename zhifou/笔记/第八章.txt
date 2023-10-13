@@ -5,3 +5,15 @@ token，并将token返回给客户端.客户端收到token后将它保存起来(
 ，通过后就认为是正确的访问
 
 客户端点击注销就是把token在storage中消除掉，token还具有过期时间
+
+action可以组合配置
+
+登陆后的数据持久化:
+使用localStorage存储token
+每次进入APP时获取localStorage中的token => 若存在token且用户未登录 => 设置请求头
+发送请求 => 请求成功(显示登录用户信息) => 请求失败(清空token)
+我的理解: 就是登录后把token保存起来(localStorage),之后每次加载APP.vue时(如果
+未登录且有token)去localStorage用token换用户信息(fetchCurrentUser这个接口通过token
+拿到用户信息)
+
+在axios的响应拦截器中添加错误处理

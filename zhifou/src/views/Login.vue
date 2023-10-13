@@ -54,12 +54,15 @@ export default defineComponent({
 
         const onFormSubmit = (result: boolean) => {
             if (result) {
-                store.dispatch('login', {
+                const payload = {
                     email: emailVal.value,
                     password: passwordVal.value,
-                }).then((res) => {
-                    console.log(res);
-                    router.push(`/`)
+                }
+                store.dispatch('loginAndFetch', payload).then((data)=>{
+                    console.log(data);
+                    router.push('/')
+                }).catch(err => {
+                    console.log(err);
                 })
             }
         }

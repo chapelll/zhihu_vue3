@@ -4,7 +4,7 @@ import router from './router';
 import store from './store';
 import App from './App.vue'
 
-const icode = 'ED04A2A4725CFD8C' 
+const icode = 'ED04A2A4725CFD8C'
 
 axios.defaults.baseURL = "http://apis.imooc.com/api/" //设置默认url
 //使用axios拦截器(request)
@@ -29,8 +29,11 @@ axios.interceptors.response.use(function (config) {
     // 在获取响应之前做些什么
     store.commit('setLoading', false)
     return config;
-}, function (error) {
-    // 对错误响应做些什么   
+}, function (err) {
+    // 对错误响应做些什么 
+    const { error } = err.response.data
+    store.commit('setError', { status: true, message: error })
+    store.commit('setLoading', false)
     return Promise.reject(error);
 });
 
