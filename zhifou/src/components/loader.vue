@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted } from 'vue'
+import useDomCreate from '@/hooks/useDomCreate'
 export default defineComponent({
   props: {
     text: {
@@ -24,14 +25,7 @@ export default defineComponent({
     }
   },
   setup() {
-    // 在loader挂载之前创建一个#back节点放到最外层
-    const node = document.createElement('div')
-    node.id = 'back'
-    document.body.appendChild(node)
-    // loader组件卸载前删除本次创建的#back节点
-    onUnmounted(() => {
-      document.body.removeChild(node)
-    })
+    useDomCreate('back')
   }
 })
 </script>
