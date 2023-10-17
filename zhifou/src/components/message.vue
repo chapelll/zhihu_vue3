@@ -25,7 +25,7 @@ export default defineComponent({
   setup(props, context) {
 
     useDomCreate('message')
-    
+
     const isVisible = ref(true)
     const classObject = {
       'alert-success': props.type == 'success',

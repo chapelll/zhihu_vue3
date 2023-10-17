@@ -19,6 +19,7 @@ axios.interceptors.request.use(function (config) {
         config.data = { ...config.data, icode: icode }
     }
     store.commit('setLoading', true)
+    store.commit('setError', { status: false, message: "" })
     return config;
 }, function (error) {
     // 对请求错误做些什么
