@@ -20,4 +20,7 @@ action可以组合配置
 
 函数式组件:
 使用createApp方法创建实例
+类似于this.$message，将组件使用函数的方式去使用
+思路: 使用createApp创建组件实例(传入组件和它的props)，然后使用.mount方法挂载在
+document上，最后使用unmount去销毁
 

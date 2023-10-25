@@ -58,7 +58,7 @@ export default defineComponent({
       const { status, message } = error.value
       if (status && message) {
         console.log(status, message);
-        createMessage(message, 'error')
+        createMessage(message, 'error', 2000)
       }
     })
     return {

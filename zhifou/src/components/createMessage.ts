@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 export type messageType = 'success' | 'error' | 'warning' | 'default'
 
 //函数式组件
-const createMessage = (message: string, type: messageType, timeout: 2000) => {
+const createMessage = (message: string, type: messageType, timeout = 2000) => {
     //使用createApp创建组件,createApp第一个参数是组件实例，第二个参数是prop
     const messageInstance = createApp(Message, {
         message, type
