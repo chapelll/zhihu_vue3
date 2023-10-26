@@ -24,3 +24,5 @@ action可以组合配置
 思路: 使用createApp创建组件实例(传入组件和它的props)，然后使用.mount方法挂载在
 document上，最后使用unmount去销毁
 
+JSX: 在js代码中写html标签  const node = <div></div>
+使用h方法可以创建虚拟dom,使用render函数进行挂载
