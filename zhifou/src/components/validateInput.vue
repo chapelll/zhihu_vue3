@@ -9,13 +9,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, onMounted, nextTick } from 'vue'
+import { defineComponent, PropType, reactive, onMounted, nextTick, customRef } from 'vue'
 import { emitter } from './validateForm.vue'
 
 const emailReg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 const phoneReg = /^1[2|3|4|5|6|7|8|9|]\d{9}$/;
 interface ruleProp {
-  type: 'required' | 'phone' | 'email',
+  type: 'required' | 'phone' | 'email' | 'custom',
+  validator?: () => boolean
   message: string
 }
 export type rulesProp = ruleProp[]
@@ -31,7 +32,7 @@ export default defineComponent({
     type: {
       type: String as PropType<tagType>,
       default: 'input'
-    }
+    },
   },
   inheritAttrs: false,
   setup(props, context) {
@@ -56,6 +57,9 @@ export default defineComponent({
               break;
             case 'phone':
               pass = phoneReg.test(inputRef.val)
+              break;
+            case 'custom':
+              pass = rule.validator ? rule.validator() : true
               break;
             default:
               break;

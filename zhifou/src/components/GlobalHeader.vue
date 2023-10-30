@@ -3,10 +3,10 @@
     <router-link to="/" class="navbar-brand">知否专栏</router-link>
     <div v-if="!user?.isLogin">
       <div class="list-inline-item">
-        <a @click="toLogin" class="btn btn-outline-light">登录</a>
+        <a @click="toPage('login')" class="btn btn-outline-light">登录</a>
       </div>
       <div class="list-inline-item">
-        <router-link to="login" class="btn btn-outline-light">注册</router-link>
+        <a @click="toPage('register')" class="btn btn-outline-light">注册</a>
       </div>
     </div>
     <div v-else>
@@ -53,12 +53,12 @@ export default defineComponent({
       store.commit('logout')
       router.push('/')
     }
-    const toLogin = () => {
-      router.push('/login')
+    const toPage = (url: string) => {
+      router.push(`/${url}`)
     }
     return {
-      logout, 
-      toLogin
+      logout,
+      toPage
     }
   }
 })

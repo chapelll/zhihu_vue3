@@ -26,3 +26,8 @@ document上，最后使用unmount去销毁
 
 JSX: 在js代码中写html标签  const node = <div></div>
 使用h方法可以创建虚拟dom,使用render函数进行挂载
+
+表单自定义校验: 传入一个校验方法validtor，提交时触发
+ case 'custom':
+    pass = rule.validator ? rule.validator() : true
+    break;
