@@ -20,7 +20,7 @@
                     </validateInput>
                 </div>
                 <template #submit>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">注册新用户</button>
                 </template>
             </validateForm>
         </div>
@@ -95,25 +95,14 @@ export default defineComponent({
                 }
 
                 const result = await axios.post('users', payload)
-                console.log('result');
-                console.log(result);
                 if (result && result.data.code === 0) {
-                    createMessage("注册成功！即将跳转登录页", 'success', 2000)
+                    createMessage("注册成功！即将跳转登录页", "success", 2000)
                     setTimeout(() => {
                         router.push('/login')
                     }, 2000)
+                } else {
+                    createMessage("注册失败！", "error", 2000)
                 }
-
-                return
-                store.dispatch('loginAndFetch', payload).then((data) => {
-                    console.log(data);
-                    createMessage("登录成功！即将跳转首页", 'success', 2000)
-                    setTimeout(() => {
-                        router.push('/')
-                    }, 2000)
-                }).catch(err => {
-                    console.log(err);
-                })
             }
         }
         const inputRef = ref<any>()
