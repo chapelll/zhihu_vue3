@@ -2,6 +2,7 @@
   <div class="container">
     <loader v-if="isLoading" text="努力加载中" background="rgba(0,0,0,0.3)"></loader>
     <GlobalHeader :user="currentUser"></GlobalHeader>
+    <uploader action="123"></uploader>
     <router-view></router-view>
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -23,6 +24,7 @@ import { useStore } from 'vuex'
 import GlobalHeader from './components/GlobalHeader.vue'
 import loader from './components/loader.vue'
 import createMessage from './components/createMessage'
+import uploader from './components/Uploader.vue'
 import axios from 'axios'
 import { GlobalDataProps } from './store'
 
@@ -32,6 +34,7 @@ export default defineComponent({
   components: {
     GlobalHeader,
     loader,
+    uploader,
   },
   setup() {
     const store = useStore<GlobalDataProps>()

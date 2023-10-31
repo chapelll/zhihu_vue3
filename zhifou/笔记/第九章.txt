@@ -1,0 +1,2 @@
+upload组件
+使用vue的方式触发html中的 button-input 逻辑
