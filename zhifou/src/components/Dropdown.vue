@@ -35,7 +35,7 @@ export default defineComponent({
     watch(isClickOutside, () => {
       if (isClickOutside.value && isOpen.value) {
         isOpen.value = false
-      } 
+      }
     })
     return {
       isOpen,

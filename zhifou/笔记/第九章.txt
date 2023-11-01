@@ -1,2 +1,10 @@
 upload组件
 使用vue的方式触发html中的 button-input 逻辑
+  const currentTarget = e.target as HTMLInputElement
+  const files = Array.from(currentTarget.files)  //currentTarget.files是input获取到的文件
+  const formData = new FormData()
+  formData.append('file', files[0])
+
+自定义上传前的检查事件 beforeUpload
+在调用上传前，先调用外部传入的beforeUpload事件，参数就是选择的文件file
+外部传入的beforeUpload事件return一个布尔值，通过它来决定流程是否继续
