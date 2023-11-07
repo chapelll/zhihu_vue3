@@ -24,7 +24,8 @@ export default defineComponent({
       //这个类型是限制外部传入的beforeUpload方法的
     }
   },
-  setup(props) {
+  emits: ['file-uploaded', 'file-uploaded-error'],
+  setup(props, context) {
     //获取input的dom节点(input类型)
     const fileInput = ref<null | HTMLInputElement>(null)
     //上传状态
@@ -61,9 +62,11 @@ export default defineComponent({
           })
           console.log(result);
           fileStatus.value = 'success'
+          context.emit('file-uploaded', result.data)
         } catch (error) {
           console.log(error);
           fileStatus.value = 'error'
+          context.emit('file-uploaded-error', { error })
         } finally {
           if (fileInput.value) {
             fileInput.value.value = ''

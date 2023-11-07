@@ -1,6 +1,12 @@
 import { createStore, Commit } from 'vuex'
 import axios from 'axios'
 
+export interface ResponseType<P = {}> {
+    code: number;
+    msg: string;
+    data: P;
+}
+
 export interface UserProps {
     isLogin: boolean;
     avatar?: string;
@@ -10,11 +16,13 @@ export interface UserProps {
     nickName?: string;
     _id?: string;
 }
-interface ImageProps {
+
+export interface ImageProps {
     _id?: string;
     url?: string;
     createdAt?: string;
 }
+
 export interface ColumnProps {
     _id: string;
     title: string;
@@ -51,6 +59,7 @@ const getAndCommit = async (url: string, mutationName: string, commit: Commit) =
     commit(mutationName, data)
     return data
 }
+
 const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
     const { data } = await axios.post(url, payload)
     commit(mutationName, data)
@@ -100,13 +109,13 @@ const store = createStore<GlobalDataProps>({
         login(state, rawData) {
             const token = rawData.data.token
             state.token = token
-            localStorage.setItem('token',token)
+            localStorage.setItem('token', token)
             //登录成功后给axios的请求头设置token
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         },
         logout(state) {
             state.token = ''
-            localStorage.setItem('token','')
+            localStorage.setItem('token', '')
             state.user.isLogin = false
         },
         fetchCurrentUser(state, rawData) {
