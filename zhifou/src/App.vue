@@ -2,7 +2,17 @@
   <div class="container">
     <loader v-if="isLoading" text="努力加载中" background="rgba(0,0,0,0.3)"></loader>
     <GlobalHeader :user="currentUser"></GlobalHeader>
-    <uploader action="/upload" :beforeUpload="beforeUpload" @file-uploaded="fileUploaded"></uploader>
+    <uploader action="/upload" :beforeUpload="beforeUpload" @file-uploaded="fileUploaded">
+
+      <template #loading>
+        <div class="spinner-border" role="status">
+        </div>
+      </template>
+
+      <template #success="dataProps">
+        <img :src="dataProps.message.data.url" width="500">
+      </template>
+    </uploader>
     <router-view></router-view>
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -67,7 +77,7 @@ export default defineComponent({
     //upload组件上传前的自定义校验
     const beforeUpload = (e: File) => {
       let flag = true
-      if (e.type !== 'image/png') {
+      if (e?.type !== 'image/png') {
         createMessage('只能上传png类型的图片！', 'error', 2000)
         flag = false
       }

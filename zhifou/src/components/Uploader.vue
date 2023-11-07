@@ -1,11 +1,19 @@
 <template>
   <div class="file-upload">
-    <button class="btn btn-primary" @click.prevent="triggerUpload">
-      <span v-if="fileStatus == 'loading'">正在上传...</span>
-      <span v-else>点击上传</span>
-    </button>
+    <div @click.prevent="triggerUpload" class="df">
+      <slot v-if="fileStatus == 'loading'" name="loading">
+        <button class="btn btn-primary">正在上传</button>
+      </slot>
+      <slot :message="message" v-else-if="fileStatus == 'success'" name="success">
+        <button class="btn btn-primary">上传成功</button>
+      </slot>
+      <slot v-else name="default">
+        <button class="btn btn-primary">点击上传</button>
+      </slot>
+    </div>
     <input type="file" class="d-none file-input" ref="fileInput" @change="handleFileChange">
   </div>
+  <button v-if="fileStatus == 'success'" class="btn btn-primary" @click="deleteImg">删除图片</button>
 </template>
 
 <script lang="ts">
@@ -62,6 +70,7 @@ export default defineComponent({
           })
           console.log(result);
           fileStatus.value = 'success'
+          message.value = result.data
           context.emit('file-uploaded', result.data)
         } catch (error) {
           console.log(error);
@@ -72,30 +81,23 @@ export default defineComponent({
             fileInput.value.value = ''
           }
         }
-
-        // axios.post(props.action, formData, {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data'
-        //   }
-        // }).then(resp => {
-        //   console.log(resp);
-        //   fileStatus.value = 'success'
-        // }).catch(err => {
-        //   console.log(err);
-        //   fileStatus.value = 'error'
-        // }).finally(() => {
-        //   if (fileInput.value) {
-        //     fileInput.value.value = ''
-        //   }
-        // })
       }
     }
+    //删除图片
+    const deleteImg = () => {
+      message.value = ''
+      fileStatus.value = 'ready'
+    }
+
+    const message = ref()
 
     return {
+      message,
       fileInput,
       fileStatus,
       triggerUpload,
-      handleFileChange
+      handleFileChange,
+      deleteImg
     }
   }
 })
