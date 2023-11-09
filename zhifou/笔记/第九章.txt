@@ -15,3 +15,6 @@ upload组件
       <template #success="message">
         <img :src="message.url" class="w-50">
       </template>
+
+每次刷新app.vue会被执行，之后执行route.js
+但是路由守卫的前置路由守卫中的判断是否登录是异步的，因此刷新时还是未登录的状态

@@ -11,7 +11,7 @@
                     <validateInput :rules="passwordRules" v-model="passwordVal" placeholder="请输入密码"></validateInput>
                 </div>
                 <template #submit>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
                 </template>
             </validateForm>
         </div>

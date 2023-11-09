@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { defineComponent, computed, onMounted, watch } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import GlobalHeader from './components/GlobalHeader.vue'
 import loader from './components/loader.vue'
@@ -54,18 +54,10 @@ export default defineComponent({
     const currentUser = computed(() => {
       return store.state.user
     })
-    const token = computed(() => {
-      return store.state.token
-    })
     const error = computed(() => {
       return store.state.error
     })
-    onMounted(() => {
-      if (!currentUser.value.isLogin && token.value) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-        store.dispatch('fetchCurrentUser')
-      }
-    })
+
     //出现错误时使用函数式组件createMessage
     watch(() => error.value.status, () => {
       const { status, message } = error.value
