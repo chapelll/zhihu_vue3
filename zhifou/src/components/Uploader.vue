@@ -1,10 +1,10 @@
 <template>
   <div class="file-upload">
-    <div @click.prevent="triggerUpload" class="df">
+    <div @click.prevent="triggerUpload" class="file-upload-container" v-bind="$attrs">
       <slot v-if="fileStatus == 'loading'" name="loading">
         <button class="btn btn-primary">正在上传</button>
       </slot>
-      <slot :message="message" v-else-if="fileStatus == 'success'" name="success">
+      <slot :message="message" v-else-if="fileStatus == 'success'" name="uploaded">
         <button class="btn btn-primary">上传成功</button>
       </slot>
       <slot v-else name="default">
@@ -32,6 +32,7 @@ export default defineComponent({
       //这个类型是限制外部传入的beforeUpload方法的
     }
   },
+  inheritAttrs: false,
   emits: ['file-uploaded', 'file-uploaded-error'],
   setup(props, context) {
     //获取input的dom节点(input类型)

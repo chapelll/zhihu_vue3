@@ -2,17 +2,6 @@
   <div class="container">
     <loader v-if="isLoading" text="努力加载中" background="rgba(0,0,0,0.3)"></loader>
     <GlobalHeader :user="currentUser"></GlobalHeader>
-    <uploader action="/upload" :beforeUpload="beforeUpload" @file-uploaded="fileUploaded">
-
-      <template #loading>
-        <div class="spinner-border" role="status">
-        </div>
-      </template>
-
-      <template #success="dataProps">
-        <img :src="dataProps.message.data.url" width="500">
-      </template>
-    </uploader>
     <router-view></router-view>
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -44,7 +33,6 @@ export default defineComponent({
   components: {
     GlobalHeader,
     loader,
-    uploader,
   },
   setup() {
     const store = useStore<GlobalDataProps>()
@@ -67,25 +55,25 @@ export default defineComponent({
       }
     })
     //upload组件上传前的自定义校验
-    const beforeUpload = (e: File) => {
-      let flag = true
-      if (e?.type !== 'image/png') {
-        createMessage('只能上传png类型的图片！', 'error', 2000)
-        flag = false
-      }
-      return flag
-    }
+    // const beforeUpload = (e: File) => {
+    //   let flag = true
+    //   if (e?.type !== 'image/png') {
+    //     createMessage('只能上传png类型的图片！', 'error', 2000)
+    //     flag = false
+    //   }
+    //   return flag
+    // }
     //upload组件的自定义事件(成功事件)
-    const fileUploaded = (e: ResponseType<ImageProps>) => {
-      console.log(e);
-      createMessage('图片上传成功，id是' + e.data._id, 'success', 2000)
-    }
+    // const fileUploaded = (e: ResponseType<ImageProps>) => {
+    //   console.log(e);
+    //   createMessage('图片上传成功，id是' + e.data._id, 'success', 2000)
+    // }
     return {
       isLoading,
       currentUser,
       error,
-      beforeUpload,
-      fileUploaded
+      // beforeUpload,
+      // fileUploaded
     }
   },
 })

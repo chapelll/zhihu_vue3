@@ -1,6 +1,24 @@
 <template>
   <div class="create-post-page">
     <h4 class="ont-weight-bold mb-4">新建文章</h4>
+    <uploader action="/upload"
+      class="d-flex justify-content-center align-items-center bg-light text-secondary w-100 my-4">
+      <div>
+        <!-- 初始状态 -->
+        <h2>点击上传头图</h2>
+      </div>
+      <template #loading>
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="spinner-border text-secondary" role="status">
+            <span class="sr-only mr"></span>
+          </div>
+          <h2 style="margin-left: 24px;">正在上传</h2>
+        </div>
+      </template>
+      <template #uploaded="dataProps">
+        <img :src="dataProps.message.data.url">
+      </template>
+    </uploader>
     <validateForm @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">文章标题:</label>
@@ -25,12 +43,14 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
+import uploader from '../components/Uploader.vue'
 
 export default defineComponent({
   name: 'create',
   components: {
     validateInput,
-    validateForm
+    validateForm,
+    uploader
   },
   setup() {
     const titleVal = ref('')
@@ -79,4 +99,15 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style>
+.create-post-page .file-upload-container {
+  height: 200px;
+  cursor: pointer;
+}
+
+.create-post-page .file-upload-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

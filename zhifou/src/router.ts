@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
                 //登录验证失败代表token已失效，清空它
                 console.error(err)
                 localStorage.removeItem('token')
-                next('login')
+                store.commit('logout')
             })
         } else {
             if (requiredLogin) {
