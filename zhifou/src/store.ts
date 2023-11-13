@@ -31,13 +31,14 @@ export interface ColumnProps {
 }
 
 export interface PostProps {
-    _id: string;
+    _id?: string;
     title: string;
     excerpt?: string;
     content?: string;
-    image?: ImageProps;
-    createdAt: string;
-    column: string;
+    image?: ImageProps | string;
+    createdAt?: string;
+    column?: string;
+    author?: string
 }
 
 export interface GlobalErrorProps {
@@ -136,6 +137,9 @@ const store = createStore<GlobalDataProps>({
         },
         async login({ commit }, payload) {
             return postAndCommit(`/user/login`, 'login', commit, payload)
+        },
+        async createPost({ commit }, payload) {
+            return postAndCommit(`/posts`, 'createPost', commit, payload)
         },
         async fetchCurrentUser({ commit }) {
             return getAndCommit('/user/current', 'fetchCurrentUser', commit)
