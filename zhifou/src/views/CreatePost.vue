@@ -1,7 +1,7 @@
 <template>
   <div class="create-post-page">
     <h4 class="ont-weight-bold mb-4">新建文章</h4>
-    <uploader action="/upload"
+    <uploader action="/upload" :beforeUpload="uploadCheck"
       class="d-flex justify-content-center align-items-center bg-light text-secondary w-100 my-4">
       <div>
         <!-- 初始状态 -->
@@ -44,13 +44,15 @@ import { useRouter } from 'vue-router'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
 import uploader from '../components/Uploader.vue'
+import createMessage from '../components/createMessage'
+import { beforeUploadCheck } from '../helper'
 
 export default defineComponent({
   name: 'create',
   components: {
     validateInput,
     validateForm,
-    uploader
+    uploader,
   },
   setup() {
     const titleVal = ref('')
@@ -66,6 +68,21 @@ export default defineComponent({
 
     const store = useStore()
     const router = useRouter()
+
+    //图片上传前的检测方法
+    const uploadCheck = (file: File) => {
+      const { passed, error } = beforeUploadCheck(file, {
+        format: ['image/png', 'image/jpg'],
+        size: 1
+      })
+      if (error == 'format') {
+        createMessage("只能上传png和jpg类型的图片", 'error')
+      }
+      if (error == 'size') {
+        createMessage("只能上传不超过1M的图片", 'error')
+      }
+      return passed
+    }
 
     const onFormSubmit = (result: boolean) => {
       if (result) {
@@ -93,7 +110,8 @@ export default defineComponent({
       contentVal,
       titleRules,
       contentRules,
-      onFormSubmit
+      uploadCheck,
+      onFormSubmit,
     }
   }
 })
