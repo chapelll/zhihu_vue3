@@ -113,7 +113,7 @@ export default defineComponent({
               name: 'columnDetail',
               params: { columnId: column }
             })
-          })
+          }, 2000)
         }
       }
     }
