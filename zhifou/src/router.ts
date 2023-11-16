@@ -6,6 +6,7 @@ import Login from '../src/views/Login.vue'
 import Register from '../src/views/Register.vue'
 import ColumnDetail from '../src/views/ColumnDetail.vue'
 import CreatePost from '../src/views/CreatePost.vue'
+import posts from '../src/views/posts.vue'
 
 const routerHistory = createWebHistory()
 const router = createRouter({
@@ -36,6 +37,13 @@ const router = createRouter({
         meta: {
             requiredLogin: true
         }
+    }, {
+        path: '/posts/:_id',
+        name: 'posts',
+        component: posts,
+        // meta: {
+        //     requiredLogin: true
+        // }
     }]
 })
 
@@ -43,7 +51,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const { user, token } = store.state
     const { requiredLogin, redirectAlreadyLogin } = to.meta
-    
+
     if (user.isLogin) {
         console.log('登录了');
         if (redirectAlreadyLogin) {

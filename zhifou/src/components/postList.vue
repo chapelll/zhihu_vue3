@@ -2,7 +2,7 @@
   <div class="post-list">
     <article v-for="post in posts" :key="post._id" class="card mb-3 shadow-sm">
       <div class="card-body">
-        <h4><router-link :to="`/posts/${post._id}/`">{{ post.title }}</router-link></h4>
+        <h4><a style="cursor: pointer;" @click="toPosts(post)">{{ post.title }}</a></h4>
         <div class="row my-3 align-items-center">
           <div v-if="post.image?.url" class="col-4">
             <img :src="post.image?.url" :alt="post.title" class="rounded-lg w-100">
@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
+import { useRouter } from 'vue-router'
 // import { PostProps, ImageProps } from '../store'
 // import { generateFitUrl } from '../helper'
 export default defineComponent({
@@ -27,13 +28,24 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const router = useRouter()
 
     const posts = computed(() => {
       return props.list
     })
 
+    const toPosts = (posts: any) => {
+      router.push({
+        name: `posts`,
+        params: {
+          '_id': posts._id
+        }
+      })
+    }
+
     return {
-      posts
+      posts,
+      toPosts,
     }
   }
 })

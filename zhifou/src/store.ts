@@ -52,6 +52,7 @@ export interface GlobalDataProps {
     token: string,
     columns: ColumnProps[];
     posts: PostProps[];
+    post: {},
     user: UserProps;
     loading: boolean;
 }
@@ -77,6 +78,7 @@ const store = createStore<GlobalDataProps>({
         loading: false,
         columns: [],
         posts: [],
+        post: {},
         user: {
             isLogin: false,
         }
@@ -101,6 +103,9 @@ const store = createStore<GlobalDataProps>({
         },
         fetchPosts(state, rawData) {
             state.posts = rawData.data.list
+        },
+        getPosts(state,rawData) {
+            state.post = rawData.data
         },
         setLoading(state, status) {
             state.loading = status
@@ -135,6 +140,9 @@ const store = createStore<GlobalDataProps>({
         },
         async fetchPosts({ commit }, id) {
             return getAndCommit(`/columns/${id}/posts`, 'fetchPosts', commit)
+        },
+        async getPosts({ commit }, id) {
+            return getAndCommit(`/posts/${id}`, 'getPosts', commit)
         },
         async login({ commit }, payload) {
             return postAndCommit(`/user/login`, 'login', commit, payload)
