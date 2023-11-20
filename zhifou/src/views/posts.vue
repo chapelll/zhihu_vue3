@@ -1,12 +1,12 @@
 <template>
-  <div class="content">
-    <div class="img-wrapper" v-if="post.image.url">
+  <div class="content" v-if="post">
+    <div class="img-wrapper" v-if="post.image">
       <img :src="post.image.url" class="img">
     </div>
     <div class="title">
       {{ post.title }}
     </div>
-    <div class="author">
+    <div class="author" v-if="post.avatar">
       <div class="avatar">
         <img :src="post.author.avatar?.url || require('../assets/avatar.png')" class="avatar-img">
         <div class="nickName">
@@ -17,10 +17,8 @@
         发表于 {{ post.createdAt }}
       </div>
     </div>
-    <div class="text" v-html="post.content">
+    <div class="text" v-html="currentHtml">
     </div>
-
-    <pre>{{ post }}</pre>
   </div>
 </template>
 
@@ -29,6 +27,7 @@
 import { defineComponent, computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import MarkdownIt from 'markdown-it'
 import { generateFitUrl } from '../helper'
 import postList from '../components/postList.vue'
 export default defineComponent({
@@ -39,6 +38,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const store = useStore()
+    const md = new MarkdownIt()
     onMounted(() => {
       console.log(route.params._id);
       if (route.params._id) {
@@ -46,14 +46,20 @@ export default defineComponent({
       }
     })
     // 获取到文章详情
-    let post = ref()
-    post = computed(() => {
+    const post = computed(() => {
       console.log(store.state.post);
       return store.state.post
     })
 
+    const currentHtml = computed(()=>{
+      if (post.value && post.value.content) {
+        return md.render(post.value.content)
+      }
+    })
+
     return {
-      post
+      post,
+      currentHtml
     }
   }
 })

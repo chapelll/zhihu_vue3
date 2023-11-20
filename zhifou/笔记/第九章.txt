@@ -24,3 +24,8 @@ upload组件
 object-fit: fill; //拉伸填满容器，不保持原来比例
 object-fit: contain; //保持原来比例，会留下空白
 object-fit: cover; //保持原来比例填满容器，会隐藏一些内容
+
+使用markdownIt插件将markdown语法格式的内容转化为html
+const md = new MarkdownIt()
+const currentHtml = md.render(post.value.content)
+<div v-html="currentHtml"></div> 
