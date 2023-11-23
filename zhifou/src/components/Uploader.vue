@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, ref } from 'vue'
+import { PropType, defineComponent, ref, watch } from 'vue'
 import axios from 'axios'
 type uploadStatus = 'ready' | 'loading' | 'success' | 'error'
 type checkFunction = (file: File) => boolean
@@ -30,6 +30,9 @@ export default defineComponent({
     beforeUpload: {
       type: Function as PropType<checkFunction>
       //这个类型是限制外部传入的beforeUpload方法的
+    },
+    uploadedData: {
+      type: Object
     }
   },
   inheritAttrs: false,

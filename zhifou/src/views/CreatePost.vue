@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ResponseType, ImageProps, PostProps } from '../store'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
@@ -69,6 +69,22 @@ export default defineComponent({
 
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
+
+
+
+    onMounted(async () => {
+      if (route.query.id) {
+        const res = await store.dispatch('getPosts', route.query.id)
+        const {title,content} = res.data
+        console.log(title,content);
+        // 回显图片
+        
+        // 回显标题和内容
+        titleVal.value = title
+        contentVal.value = content
+      }
+    })
 
     //图片上传前的检测方法
     const uploadCheck = (file: File) => {
