@@ -36,7 +36,7 @@ export default defineComponent({
 
     const toPosts = (posts: any) => {
       router.push({
-        name: `posts`,
+        name: `postDetail`,
         params: {
           '_id': posts._id
         }

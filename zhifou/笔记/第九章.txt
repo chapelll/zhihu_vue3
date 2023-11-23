@@ -19,8 +19,6 @@ upload组件
 每次刷新app.vue会被执行，之后执行route.js
 但是路由守卫的前置路由守卫中的判断是否登录是异步的，因此刷新时还是未登录的状态
 
-
-
 object-fit: fill; //拉伸填满容器，不保持原来比例
 object-fit: contain; //保持原来比例，会留下空白
 object-fit: cover; //保持原来比例填满容器，会隐藏一些内容

@@ -6,7 +6,7 @@
     <div class="title">
       {{ post.title }}
     </div>
-    <div class="author" v-if="post.avatar">
+    <div class="author" v-if="post.author">
       <div class="avatar">
         <img :src="post.author.avatar?.url || require('../assets/avatar.png')" class="avatar-img">
         <div class="nickName">
@@ -19,6 +19,12 @@
     </div>
     <div class="text" v-html="currentHtml">
     </div>
+
+    <div v-if="showEditArea" class="btn-group mt-5">
+      <router-link type="button" class="btn btn-success" :to="{ name: 'create', query: { id: post._id } }">编辑</router-link>
+      <button type="button" class="btn btn-danger">删除</button>
+    </div>
+
   </div>
 </template>
 
@@ -45,19 +51,30 @@ export default defineComponent({
         store.dispatch('getPosts', route.params._id)
       }
     })
+
+    const showEditArea = computed(() => {
+      const { isLogin, _id } = store.state.user
+      if (isLogin && post.value.author && post.value.author._id) {
+        return _id === post.value.author._id
+      } else {
+        return false
+      }
+    })
+
     // 获取到文章详情
     const post = computed(() => {
       console.log(store.state.post);
       return store.state.post
     })
 
-    const currentHtml = computed(()=>{
+    const currentHtml = computed(() => {
       if (post.value && post.value.content) {
         return md.render(post.value.content)
       }
     })
 
     return {
+      showEditArea,
       post,
       currentHtml
     }

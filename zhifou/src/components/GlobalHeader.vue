@@ -19,6 +19,9 @@
             <a href="#" class="dropdown-item">编辑资料</a>
           </Dropdown-item>
           <Dropdown-item>
+            <router-link :to="`/columnDetail/${user.column}`" class="dropdown-item">我的专栏</router-link>
+          </Dropdown-item>
+          <Dropdown-item>
             <a href="#" class="dropdown-item" @click="logout">退出登录</a>
           </Dropdown-item>
         </Dropdown>
