@@ -31,8 +31,9 @@ export default defineComponent({
       type: Function as PropType<checkFunction>
       //这个类型是限制外部传入的beforeUpload方法的
     },
-    uploadedData: {
+    uploaded: {
       type: Object
+      //外部传入的回显数据
     }
   },
   inheritAttrs: false,
@@ -41,7 +42,7 @@ export default defineComponent({
     //获取input的dom节点(input类型)
     const fileInput = ref<null | HTMLInputElement>(null)
     //上传状态
-    const fileStatus = ref<uploadStatus>('ready')
+    const fileStatus = ref<uploadStatus>(props.uploaded ? 'success' : 'ready')
     const triggerUpload = () => {
       console.log(fileInput.value);
       if (fileInput.value) {
@@ -94,6 +95,12 @@ export default defineComponent({
     }
 
     const message = ref()
+
+    if (props.uploaded) {
+      console.log(123);
+      message.value = ref(props.uploaded)
+      console.log(message.value);
+    }
 
     return {
       message,

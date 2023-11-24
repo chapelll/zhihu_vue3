@@ -1,7 +1,7 @@
 <template>
   <div class="create-post-page">
     <h4 class="ont-weight-bold mb-4">新建文章</h4>
-    <uploader action="/upload" :beforeUpload="uploadCheck" @file-uploaded="handleFileUpload"
+    <uploader action="/upload" :beforeUpload="uploadCheck" @file-uploaded="handleFileUpload" :uploaded="uploadedData"
       class="d-flex justify-content-center align-items-center bg-light text-secondary w-100 my-4">
       <div>
         <!-- 初始状态 -->
@@ -70,16 +70,20 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-
+    let uploadedData = ref()
 
 
     onMounted(async () => {
       if (route.query.id) {
         const res = await store.dispatch('getPosts', route.query.id)
-        const {title,content} = res.data
-        console.log(title,content);
+        const { title, content } = res.data
+        console.log(title, content);
         // 回显图片
-        
+        if (res.data.image) {
+          uploadedData.value = {
+            data: res.data.image
+          }
+        }
         // 回显标题和内容
         titleVal.value = title
         contentVal.value = content
@@ -138,6 +142,7 @@ export default defineComponent({
       contentVal,
       titleRules,
       contentRules,
+      uploadedData,
       uploadCheck,
       onFormSubmit,
       handleFileUpload,
