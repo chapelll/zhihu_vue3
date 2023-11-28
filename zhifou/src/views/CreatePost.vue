@@ -86,7 +86,7 @@ export default defineComponent({
         }
         // 回显标题和内容
         titleVal.value = title
-        contentVal.value = content
+        contentVal.value = content || ""
       }
     })
 

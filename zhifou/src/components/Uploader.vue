@@ -13,7 +13,9 @@
     </div>
     <input type="file" class="d-none file-input" ref="fileInput" @change="handleFileChange">
   </div>
-  <button v-if="fileStatus == 'success'" class="btn btn-primary" @click="deleteImg">删除图片</button>
+  <div style="display: flex;justify-content: center;">
+    <button v-if="fileStatus == 'success'" class="btn btn-primary" @click="deleteImg">删除图片</button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -73,9 +75,9 @@ export default defineComponent({
               'Content-Type': 'multipart/form-data'
             }
           })
-          console.log(result);
           fileStatus.value = 'success'
           message.value = result.data
+          console.log('message', message.value);
           context.emit('file-uploaded', result.data)
         } catch (error) {
           console.log(error);
@@ -96,11 +98,13 @@ export default defineComponent({
 
     const message = ref()
 
-    if (props.uploaded) {
-      console.log(123);
-      message.value = ref(props.uploaded)
-      console.log(message.value);
-    }
+    watch(() => props.uploaded, (newVal) => {
+      if (newVal) {
+        fileStatus.value = 'success'
+        message.value = newVal
+      }
+    })
+
 
     return {
       message,

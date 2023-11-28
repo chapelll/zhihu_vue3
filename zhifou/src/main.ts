@@ -4,7 +4,7 @@ import router from './router';
 import store from './store';
 import App from './App.vue'
 
-const icode = 'B801A61CF46138FF'
+const icode = '8C3A979B6BF280FA'
 
 axios.defaults.baseURL = "http://apis.imooc.com/api/" //设置默认url
 //使用axios拦截器(request)

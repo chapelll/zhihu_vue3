@@ -1,15 +1,15 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input v-if="type == 'input'" class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
-      @blur="validateInput" @change="validateInput" @input="updateValue" v-bind="$attrs">
-    <textarea v-else class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
-      @blur="validateInput" @change="validateInput" @input="updateValue" v-bind="$attrs" rows="10"></textarea>
+    <input v-if="type == 'input'" class="form-control" :class="{ 'is-invalid': inputRef.error }" @blur="validateInput"
+      @change="validateInput" v-model="inputRef.val" v-bind="$attrs">
+    <textarea v-else class="form-control" :class="{ 'is-invalid': inputRef.error }" @blur="validateInput"
+      @change="validateInput" v-model="inputRef.val" v-bind="$attrs" rows="10"></textarea>
     <span class="invalid-feedback" v-if="inputRef.error">{{ inputRef.message }}</span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, onMounted, nextTick, customRef } from 'vue'
+import { defineComponent, PropType, reactive, onMounted, nextTick, watch, customRef } from 'vue'
 import { emitter } from './validateForm.vue'
 
 const emailReg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
@@ -72,23 +72,20 @@ export default defineComponent({
       return true
     }
 
-    const updateValue = (e: Event) => {
-      nextTick(() => {
-        validateInput()
-      })
-      const targetValue = (e.target as HTMLInputElement).value
-      inputRef.val = targetValue
-      context.emit('update:modelValue', targetValue)
-    }
 
     onMounted(() => {
       emitter.emit('form-item-created', validateInput)
     })
 
+    watch(() => props.modelValue, (newVal) => {
+      if (newVal) {
+        inputRef.val = newVal
+      }
+    })
+
     return {
       inputRef,
       validateInput,
-      updateValue
     }
   },
 })
