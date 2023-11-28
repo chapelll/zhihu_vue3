@@ -1,6 +1,6 @@
 <template>
   <div class="create-post-page">
-    <h4 class="ont-weight-bold mb-4">新建文章</h4>
+    <h4 class="ont-weight-bold mb-4">{{ editPost ? '修改文章' : '创建文章' }}</h4>
     <uploader action="/upload" :beforeUpload="uploadCheck" @file-uploaded="handleFileUpload" :uploaded="uploadedData"
       class="d-flex justify-content-center align-items-center bg-light text-secondary w-100 my-4">
       <div>
@@ -31,7 +31,7 @@
         </validateInput>
       </div>
       <template #submit>
-        <button type="submit" class="btn btn-primary btn-large">发表文章</button>
+        <button type="submit" class="btn btn-primary btn-large">{{ editPost ? '更新文章' : '发表文章' }}</button>
       </template>
     </validateForm>
   </div>
@@ -72,6 +72,7 @@ export default defineComponent({
     const route = useRoute()
     let uploadedData = ref()
 
+    let editPost = ref(false)
 
     onMounted(async () => {
       if (route.query.id) {
@@ -87,6 +88,7 @@ export default defineComponent({
         // 回显标题和内容
         titleVal.value = title
         contentVal.value = content || ""
+        editPost.value = true
       }
     })
 
@@ -125,15 +127,23 @@ export default defineComponent({
           if (imageId) {
             newPost.image = imageId
           }
-          store.dispatch('createPost', newPost).then((res) => {
-            createMessage('发表成功,2秒后跳转到文章', 'success', 2000)
+          // 在这里分辨创建和更新
+          const actionName = editPost.value ? 'updatePost' : 'createPost'
+          const sendData = editPost.value ? {
+            id: route.query.id,
+            payload: newPost
+          } : newPost
+          store.dispatch(actionName, sendData).then((res) => {
+            console.log(editPost.value);
+            console.log(editPost.value ? '更新成功' : '发表成功');
+            createMessage(`${editPost.value ? '更新成功' : '发表成功'},2秒后跳转到专栏`, 'success', 2000)
+            setTimeout(() => {
+              router.push({
+                name: 'columnDetail',
+                params: { columnId: column }
+              })
+            }, 2000)
           })
-          setTimeout(() => {
-            router.push({
-              name: 'columnDetail',
-              params: { columnId: column }
-            })
-          }, 2000)
         }
       }
     }
@@ -143,6 +153,7 @@ export default defineComponent({
       titleRules,
       contentRules,
       uploadedData,
+      editPost,
       uploadCheck,
       onFormSubmit,
       handleFileUpload,
