@@ -138,6 +138,11 @@ const store = createStore<GlobalDataProps>({
         },
         updatePost(state, rawData) {
             state.post = rawData.data
+        },
+        deletePost(state, rawData) {
+            console.log('rawData', rawData);
+            console.log('state.posts', state.posts);
+            state.post = {}
         }
     },
     actions: {
@@ -171,6 +176,11 @@ const store = createStore<GlobalDataProps>({
             return asyncAndCommit(`/posts/${id}`, 'updatePost', commit, {
                 method: 'patch',
                 data: payload
+            })
+        },
+        async deletePost({ commit }, { id }) {
+            return asyncAndCommit(`/posts/${id}`, 'deletePost', commit, {
+                method: 'delete',
             })
         }
     },

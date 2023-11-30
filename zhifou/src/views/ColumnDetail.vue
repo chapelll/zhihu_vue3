@@ -35,6 +35,7 @@ export default defineComponent({
     const currentId = route.params.columnId
 
     onMounted(() => {
+      console.log('跳转');
       store.dispatch('fetchColumn', currentId)
       store.dispatch('fetchPosts', currentId)
     })

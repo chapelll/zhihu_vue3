@@ -27,6 +27,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">文章详情:</label>
+        <textarea ref="textArea"></textarea>
         <validateInput :rules="contentRules" v-model="contentVal" placeholder="请输入文章详情" type="textarea">
         </validateInput>
       </div>
@@ -41,6 +42,7 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import EasyMde from 'easymde'
 import { ResponseType, ImageProps, PostProps } from '../store'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
@@ -58,6 +60,7 @@ export default defineComponent({
   setup() {
     const titleVal = ref('')
     const contentVal = ref('')
+    const textArea = ref<null | HTMLTextAreaElement>(null)
     const titleRules: rulesProp = [{
       type: 'required',
       message: '请输入标题',
@@ -75,6 +78,10 @@ export default defineComponent({
     let editPost = ref(false)
 
     onMounted(async () => {
+      if (textArea.value) {
+        const easyMdeInstance = new EasyMde({element: textArea.value})
+      }
+
       if (route.query.id) {
         const res = await store.dispatch('getPosts', route.query.id)
         const { title, content } = res.data
@@ -154,6 +161,7 @@ export default defineComponent({
       contentRules,
       uploadedData,
       editPost,
+      textArea,
       uploadCheck,
       onFormSubmit,
       handleFileUpload,
