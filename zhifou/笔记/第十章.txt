@@ -1,0 +1,13 @@
+使用富文本插件来当作内容上传组件
+监听富文本编辑器的change，blur事件，设置传入的props(默认内容)，双向绑定modelValue
+每次触发事件时向外emit
+    easyMdeInstance.codemirror.on('change', () => {
+      if (easyMdeInstance) {
+        const updateValue = easyMdeInstance.value()
+        innerValue.value = updateValue
+        emit('update:modelValue', updateValue)
+        emit('change', updateValue)
+      }
+    })
+
+defineExpose 导出组件上的实例和方法 (外部组件通过ref拿到的实例上的方法)

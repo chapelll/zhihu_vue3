@@ -27,7 +27,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">文章详情:</label>
-        <textarea ref="textArea"></textarea>
+        <editor ref="editorRef" v-model="contentVal" :options="editorOptions"></editor>
         <validateInput :rules="contentRules" v-model="contentVal" placeholder="请输入文章详情" type="textarea">
         </validateInput>
       </div>
@@ -42,12 +42,13 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import EasyMde from 'easymde'
+import EasyMde, { Options } from 'easymde'
 import { ResponseType, ImageProps, PostProps } from '../store'
 import validateInput, { rulesProp } from '../components/validateInput.vue'
 import validateForm from '../components/validateForm.vue'
 import uploader from '../components/Uploader.vue'
 import createMessage from '../components/createMessage'
+import editor from '../components/Editor.vue'
 import { beforeUploadCheck } from '../helper'
 
 export default defineComponent({
@@ -56,6 +57,7 @@ export default defineComponent({
     validateInput,
     validateForm,
     uploader,
+    editor
   },
   setup() {
     const titleVal = ref('')
@@ -69,6 +71,11 @@ export default defineComponent({
       type: 'required',
       message: '请输入内容',
     }]
+    const editorOptions: Options = {
+      spellChecker: false
+    }
+
+    const editorRef: any = ref(null)
 
     const store = useStore()
     const router = useRouter()
@@ -78,10 +85,9 @@ export default defineComponent({
     let editPost = ref(false)
 
     onMounted(async () => {
-      if (textArea.value) {
-        const easyMdeInstance = new EasyMde({element: textArea.value})
+      if (editorRef.value) {
+        console.log('2', editorRef.value.getMdeInstance());
       }
-
       if (route.query.id) {
         const res = await store.dispatch('getPosts', route.query.id)
         const { title, content } = res.data
@@ -162,6 +168,8 @@ export default defineComponent({
       uploadedData,
       editPost,
       textArea,
+      editorOptions,
+      editorRef,
       uploadCheck,
       onFormSubmit,
       handleFileUpload,
