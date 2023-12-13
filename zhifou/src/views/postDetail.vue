@@ -36,7 +36,7 @@
 import { defineComponent, computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import MarkdownIt from 'markdown-it'
+import { marked } from 'marked'
 import { generateFitUrl } from '../helper'
 import postList from '../components/postList.vue'
 import Modal from '../components/Modal.vue'
@@ -51,7 +51,6 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const md = new MarkdownIt()
     onMounted(() => {
       console.log(route.params._id);
       if (route.params._id) {
@@ -76,7 +75,7 @@ export default defineComponent({
 
     const currentHtml = computed(() => {
       if (post.value && post.value.content) {
-        return md.render(post.value.content)
+        return marked(post.value.content, { breaks: true })
       }
     })
 

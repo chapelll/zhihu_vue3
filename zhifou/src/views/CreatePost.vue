@@ -27,9 +27,10 @@
       </div>
       <div class="mb-3">
         <label class="form-label">文章详情:</label>
-        <editor ref="editorRef" v-model="contentVal" :options="editorOptions"></editor>
-        <validateInput :rules="contentRules" v-model="contentVal" placeholder="请输入文章详情" type="textarea">
-        </validateInput>
+        <editor ref="editorRef" v-model="contentVal" :options="editorOptions" @blur="checkEditor"
+          :class="{ 'is-invalid': !editorStatus.isValid }">
+        </editor>
+        <span v-if="!editorStatus.isValid" class="invalid-feedback mt-1">{{ editorStatus.message }}</span>
       </div>
       <template #submit>
         <button type="submit" class="btn btn-primary btn-large">{{ editPost ? '更新文章' : '发表文章' }}</button>
@@ -39,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import EasyMde, { Options } from 'easymde'
@@ -62,15 +63,16 @@ export default defineComponent({
   setup() {
     const titleVal = ref('')
     const contentVal = ref('')
+    const editorStatus = reactive({
+      isValid: true,
+      message: ''
+    })
     const textArea = ref<null | HTMLTextAreaElement>(null)
     const titleRules: rulesProp = [{
       type: 'required',
       message: '请输入标题',
     }]
-    const contentRules: rulesProp = [{
-      type: 'required',
-      message: '请输入内容',
-    }]
+
     const editorOptions: Options = {
       spellChecker: false
     }
@@ -83,6 +85,16 @@ export default defineComponent({
     let uploadedData = ref()
 
     let editPost = ref(false)
+
+    const checkEditor = () => {
+      if (contentVal.value.trim() === "") {
+        editorStatus.isValid = false
+        editorStatus.message = '文章详情不能为空'
+      } else {
+        editorStatus.isValid = true
+        editorStatus.message = ''
+      }
+    }
 
     onMounted(async () => {
       if (editorRef.value) {
@@ -104,6 +116,8 @@ export default defineComponent({
         editPost.value = true
       }
     })
+
+
 
     //图片上传前的检测方法
     const uploadCheck = (file: File) => {
@@ -127,7 +141,8 @@ export default defineComponent({
     }
 
     const onFormSubmit = async (result: boolean) => {
-      if (result) {
+      checkEditor()
+      if (result && editorStatus.isValid) {
         console.log('通过验证');
         const { column, _id } = store.state.user
         if (column) {
@@ -164,15 +179,16 @@ export default defineComponent({
       titleVal,
       contentVal,
       titleRules,
-      contentRules,
       uploadedData,
       editPost,
       textArea,
       editorOptions,
       editorRef,
+      editorStatus,
       uploadCheck,
       onFormSubmit,
       handleFileUpload,
+      checkEditor
     }
   }
 })
