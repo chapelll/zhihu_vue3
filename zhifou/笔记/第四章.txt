@@ -19,3 +19,10 @@ const abc = ref(null)，最后return出去即可获取到
 注意: ref和定义的变量名要相同
 
 Ref代表的是一个类(响应式)
+
+overflow: hidden; //超出的文本隐藏
+text-overflow: ellipsis; //溢出用省略号显示
+// white-space: nowrap; //溢出不换行
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 2;
